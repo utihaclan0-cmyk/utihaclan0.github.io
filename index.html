@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#e04435" id="themeColor">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="AVK">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="description" content="AVK — автосервис в Подольске по адресу ул. 43-й Армии, 18, стр. 3. Обслуживание и ремонт автомобилей.">
+  <link rel="icon" id="favicon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23e04435'/%3E%3Cpath d='M12 38h40l-4-13H20zM18 38v8m28-8v8M22 25l4-8h12l4 8' fill='none' stroke='white' stroke-width='4' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <title>AVK — автосервис в Подольске</title>
+  <style>
+    :root {
+      --bg: #111111;
+      --panel: #191919;
+      --panel-2: #202020;
+      --text: #f7f7f7;
+      --muted: #b8b8b8;
+      --line: #363636;
+      --accent: #e04435;
+      --accent-hover: color-mix(in srgb, var(--accent) 82%, black);
+      --on-accent: #ffffff;
+      --max: 1160px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font: 16px/1.55 Arial, Helvetica, sans-serif;
+    }
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    .wrap { width: min(var(--max), calc(100% - 40px)); margin-inline: auto; }
+    .topline { background: #090909; color: var(--muted); font-size: 14px; }
+    .topline .wrap { min-height: 38px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    header { position: sticky; top: 0; z-index: 10; background: #111111f2; backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+    nav { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .brand { display: flex; align-items: center; gap: 12px; min-width: 0; font-weight: 900; letter-spacing: .02em; }
+    .logo-slot { width: 46px; height: 46px; flex: 0 0 46px; border-radius: 50%; display: grid; place-items: center; overflow:hidden; background:var(--accent); color:var(--on-accent); font-size:17px; font-weight:900; }
+    .logo-slot img { width:100%; height:100%; object-fit:contain; background:#fff; }
+    .brand-name { min-width: 0; overflow-wrap: anywhere; }
+    .brand small { display: block; color: var(--muted); font-size: 12px; font-weight: 500; letter-spacing: 0; margin-top: 2px; }
+    .navlinks { display: flex; gap: 18px; color: #dedede; font-size: 14px; }
+    .navlinks a:hover, .text-link:hover { color: var(--accent); }
+    .nav-actions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 8px; }
+    .phone { white-space: nowrap; font-weight: 800; font-size: 15px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 46px; padding: 11px 17px; border: 1px solid transparent; border-radius: 9px;
+      background: var(--accent); color: var(--on-accent); font-weight: 800; font-size: 15px;
+      text-align: center; cursor: pointer; transition: background .18s, transform .18s;
+    }
+    .btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+    .btn.secondary { background: transparent; border-color: #555; color: var(--text); }
+    .btn.secondary:hover { border-color: var(--accent); color: var(--accent); }
+    .btn.messenger { background: #202020; border-color: #444; }
+    .btn.messenger:hover { border-color: var(--accent); }
+    .hero { position: relative; overflow: hidden; background: radial-gradient(ellipse at 80% 40%, color-mix(in srgb, var(--accent) 25%, transparent), transparent 38%), linear-gradient(120deg, #111, #1a1a1a 65%, #241513); }
+    .hero-grid { min-height: 510px; padding-block: 72px; display: grid; grid-template-columns: 1.15fr .85fr; align-items: center; gap: 42px; }
+    .eyebrow { color: var(--accent); font-size: 13px; font-weight: 900; letter-spacing: .14em; text-transform: uppercase; }
+    h1 { margin: 16px 0 20px; max-width: 760px; font-size: clamp(38px, 5vw, 66px); line-height: 1.04; letter-spacing: -.045em; }
+    h1 span { color: var(--accent); }
+    .hero p { max-width: 610px; color: #d0d0d0; font-size: 18px; margin: 0 0 26px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .hero-art { min-height: 300px; border: 1px solid #ffffff1c; border-radius: 18px; background: linear-gradient(145deg, #292929, #111); display: flex; flex-direction: column; align-items: stretch; justify-content: center; gap:13px; padding: 26px; text-align: left; color: #eee; background-size:cover; background-position:center; }
+    .hero-art .info-label { display:block;color:var(--muted);font-size:13px;margin:0; }
+    .hero-art strong { color: #eee; font-size: 16px; }
+    .rating-pill { margin-top:4px;padding:13px 15px;border-radius:10px;background:color-mix(in srgb,var(--accent) 15%,#171717);border:1px solid color-mix(in srgb,var(--accent) 45%,#333);font-weight:800; }
+    .rating-pill small { display:block;font-weight:400;color:#ddd; }
+    .mobile-cta .btn { min-height:46px; }
+    section { padding: 76px 0; }
+    .section-head { display: flex; justify-content: space-between; align-items: end; gap: 26px; margin-bottom: 30px; }
+    .kicker { color: var(--accent); font-size: 13px; font-weight: 900; letter-spacing: .14em; text-transform: uppercase; }
+    h2 { margin: 8px 0 0; font-size: clamp(30px, 4vw, 44px); line-height: 1.1; letter-spacing: -.035em; }
+    .section-head > p { max-width: 440px; margin: 0; color: var(--muted); font-size: 16px; }
+    .services-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .service { display: flex; flex-direction: column; min-width: 0; padding: 24px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; }
+    .service-mark { width: 42px; height: 42px; border-radius: 10px; display: grid; place-items: center; background: color-mix(in srgb, var(--accent) 18%, #1b1b1b); color: var(--accent); font-size: 22px; font-weight: 900; }
+    .service h3, .why h3 { margin: 17px 0 8px; font-size: 20px; line-height: 1.25; }
+    .service p, .why p { margin: 0; color: var(--muted); font-size: 15px; }
+    .service .price { margin-top: auto; padding-top: 20px; font-size: 25px; font-weight: 900; color: var(--accent); }
+    .service .price small { font-size: 14px; color: var(--muted); font-weight: 500; }
+    .empty-note { padding: 20px; border: 1px dashed #555; border-radius: 12px; color: var(--muted); }
+    .why-section { background: #151515; }
+    .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 14px; }
+    .why { padding: 22px; border: 1px solid var(--line); border-radius: 13px; background: var(--panel); }
+    .why .num { color: var(--accent); font-size: 13px; font-weight: 900; }
+    .why h3 { margin-top: 12px; font-size: 18px; }
+    .steps-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; counter-reset: step; }
+    .step { padding: 22px; border-top: 2px solid var(--accent); background: var(--panel); border-radius: 0 0 12px 12px; }
+    .step .num { color: var(--accent); font-size: 28px; font-weight: 900; }
+    .step h3 { font-size: 18px; margin: 8px 0; }
+    .step p { color: var(--muted); margin: 0; font-size: 15px; }
+    .reviews-section { background: #151515; }
+    .reviews-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .review { background: var(--panel); border: 1px solid var(--line); border-radius: 13px; padding: 23px; }
+    .review blockquote { margin: 0 0 15px; color: #e5e5e5; font-size: 16px; }
+    .review strong { display: block; }
+    .review a { display: inline-block; color: var(--accent); font-size: 14px; margin-top: 6px; text-decoration: underline; text-underline-offset: 3px; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .contact-card { padding: 25px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; min-width: 0; }
+    .contact-card h3 { margin: 0 0 10px; font-size: 19px; }
+    .contact-card p { margin: 0 0 14px; color: var(--muted); overflow-wrap: anywhere; }
+    .contact-card .btn { margin: 5px 6px 0 0; }
+    .form-section { background: linear-gradient(120deg, #1a1a1a, #111); }
+    .form-grid { display: grid; grid-template-columns: 1fr .9fr; align-items: start; gap: 48px; }
+    .form-copy h2 { font-size: clamp(34px, 4.5vw, 52px); }
+    .form-copy > p { color: var(--muted); font-size: 17px; max-width: 500px; }
+    .process-list { display: grid; gap: 14px; margin-top: 28px; }
+    .process-item { display: flex; gap: 12px; align-items: flex-start; }
+    .process-item b { flex: 0 0 32px; width: 32px; height: 32px; display: grid; place-items: center; border-radius: 50%; background: var(--accent); }
+    .form-card { padding: 28px; background: #f8f8f8; color: #171717; border-radius: 16px; box-shadow: 0 20px 60px #0005; }
+    .form-card h3 { margin: 0 0 6px; font-size: 25px; }
+    .form-card > p { color: #555; font-size: 15px; margin: 0 0 20px; }
+    .field { display: grid; gap: 7px; margin-bottom: 14px; }
+    .field label { font-size: 15px; font-weight: 800; }
+    .field input, .field textarea { width: 100%; min-width: 0; min-height: 46px; border: 1px solid #ccc; border-radius: 8px; padding: 11px 12px; color: #171717; background: white; }
+    .field textarea { min-height: 100px; resize: vertical; }
+    .field input:focus, .field textarea:focus { outline: 2px solid color-mix(in srgb, var(--accent) 35%, transparent); border-color: var(--accent); }
+    .consent { display: flex; align-items: flex-start; gap: 10px; color: #444; font-size: 14px; line-height: 1.45; margin: 16px 0; }
+    .consent input { width: 18px; height: 18px; flex: 0 0 18px; margin-top: 2px; accent-color: var(--accent); }
+    .consent a { color: #9c241a; text-decoration: underline; text-underline-offset: 2px; }
+    .form-card .btn { width: 100%; min-height: 48px; }
+    .form-note { margin: 12px 0 0 !important; font-size: 13px !important; color: #666 !important; }
+    footer { padding: 32px 0 24px; background: #080808; border-top: 1px solid var(--line); }
+    .footer-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 18px; }
+    .footer-note { margin: 18px 0 0; color: #999; font-size: 13px; }
+    .toast { position: fixed; left: 50%; bottom: 22px; z-index: 30; transform: translateX(-50%); width: max-content; max-width: calc(100% - 28px); padding: 14px 18px; border-radius: 10px; background: #f8f8f8; color: #111; box-shadow: 0 8px 30px #0008; display: none; font-size: 15px; }
+    .toast.show { display: block; }
+    .mobile-cta { display: none; }
+    [hidden] { display: none !important; }
+    @media (max-width: 1000px) {
+      .navlinks { display: none; }
+      .hero-grid { gap: 24px; }
+      .why-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .services-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 700px) {
+      .wrap { width: calc(100% - 32px); }
+      .topline .wrap { justify-content: center; text-align: center; }
+      .topline .top-extra { display: none; }
+      nav { min-height: 68px; gap: 8px; }
+      .brand { gap: 8px; font-size: 14px; }
+      .logo-slot { width: 40px; height: 40px; flex-basis: 40px; }
+      .brand small { font-size: 11px; }
+      .nav-actions { gap: 6px; }
+      .nav-actions .phone { display: none; }
+      .nav-actions .btn { min-height: 44px; padding: 9px 11px; font-size: 14px; }
+      .hero-grid { grid-template-columns: 1fr; padding-block: 48px 38px; gap: 28px; min-height: auto; }
+      h1 { font-size: clamp(37px, 10vw, 54px); }
+      .hero p { font-size: 16px; }
+      .hero-art { min-height: 230px; }
+      section { padding: 58px 0; }
+      .section-head { display: block; }
+      .section-head > p { margin-top: 14px; }
+      .contact-grid, .form-grid { grid-template-columns: 1fr; gap: 25px; }
+      .form-card { padding: 22px; }
+      .mobile-cta { display: flex; position: fixed; z-index: 20; bottom: 0; left: 0; right: 0; gap: 9px; padding: 9px 12px calc(9px + env(safe-area-inset-bottom)); background: #0d0d0df5; border-top: 1px solid #333; }
+      .mobile-cta .btn { flex: 1; min-height: 46px; padding: 10px; font-size: 14px; }
+      body { padding-bottom: calc(68px + env(safe-area-inset-bottom)); }
+    }
+    @media (max-width: 480px) {
+      .services-grid, .why-grid, .steps-grid, .reviews-grid { grid-template-columns: 1fr; }
+      .service, .why, .step { padding: 20px; }
+      .section-head h2, h2 { font-size: 32px; }
+      .hero-actions { display: grid; grid-template-columns: 1fr; }
+      .hero-actions .btn { width: 100%; min-height: 48px; }
+      .footer-row { align-items: flex-start; flex-direction: column; }
+    }
+    @media (max-width: 380px) {
+      .wrap { width: calc(100% - 24px); }
+      nav { gap: 5px; }
+      .brand { font-size: 12px; gap: 6px; }
+      .logo-slot { width: 34px; height: 34px; flex-basis: 34px; font-size: 9px; }
+      .brand small { font-size: 10px; }
+      .nav-actions .btn { padding: 8px; font-size: 13px; }
+      .hero-grid { padding-top: 40px; }
+      h1 { font-size: 37px; }
+      .form-card { padding: 18px; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; } }
+
+    /* PWA: safe areas and app-like touch behavior */
+    header { padding-top: env(safe-area-inset-top); }
+    @media (display-mode: standalone), (display-mode: fullscreen) {
+      html, body { overscroll-behavior-y: none; }
+      body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+      input, textarea { -webkit-user-select: text; user-select: text; }
+      a, button, .btn { -webkit-tap-highlight-color: transparent; }
+      .btn, button { touch-action: manipulation; }
+      .mobile-cta { display:flex; position:fixed; z-index:20; bottom:0; left:0; right:0; gap:9px; padding:9px 12px calc(9px + env(safe-area-inset-bottom)); background:#0d0d0df5; border-top:1px solid #333; }
+      .mobile-cta .btn { flex:1; min-height:46px; padding:10px; font-size:14px; }
+      body { padding-bottom:calc(68px + env(safe-area-inset-bottom)); }
+    }
+    .install-hint { position:fixed; z-index:40; left:14px; right:14px; bottom:calc(82px + env(safe-area-inset-bottom)); max-width:520px; margin:auto; padding:16px 48px 16px 16px; border:1px solid #454545; border-radius:14px; background:#202020; color:#f7f7f7; box-shadow:0 12px 36px #0009; }
+    .install-hint p { margin:0; font-size:14px; }
+    .install-hint strong { display:block; margin-bottom:4px; }
+    .install-hint button { position:absolute; top:8px; right:8px; width:32px; height:32px; border:0; border-radius:8px; background:#383838; color:white; font-size:22px; cursor:pointer; }
+    .install-hint .install-action { display:inline-flex; margin-top:10px; min-height:38px; padding:8px 13px; border:0; border-radius:8px; background:var(--accent); color:var(--on-accent); font-weight:800; }
+\n  </style>
+</head>
+<body>
+  <div class="topline" id="demoLine" hidden><div class="wrap" style="justify-content:center">Демонстрационный макет</div></div>
+  <header>
+    <nav class="wrap" aria-label="Основная навигация">
+      <a class="brand" href="#home" aria-label="На главную">
+        <span class="logo-slot" data-logo>AVK</span>
+        <span class="brand-name"><span data-business-name>[УТОЧНИТЬ: название автосервиса]</span><small>АВТОСЕРВИС</small></span>
+      </a>
+      <div class="navlinks"><a href="#services">Услуги</a><a href="#why">Преимущества</a><a href="#process">Как работаем</a><a href="#contacts">Контакты</a></div>
+      <div class="nav-actions">
+        <a class="phone" data-phone href="tel:+79263394243">+7 (926) 339-42-43</a><a class="btn" data-mobile-call href="tel:+79263394243" aria-label="Позвонить">Позвонить</a><a class="btn messenger" data-whatsapp href="https://wa.me/79263394243" target="_blank" rel="noopener noreferrer" hidden>WhatsApp</a><a class="btn messenger" data-telegram href="#" hidden>Telegram</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow">Автосервис · Подольск</div>
+          <h1>Ремонт и обслуживание авто <span>в Подольске</span></h1>
+          <p>Опишите проблему и оставьте заявку — детали услуг и стоимость уточняются после диагностики.</p>
+          <div class="hero-actions"><a class="btn" href="#signup">Записаться</a><a class="btn secondary" href="#services">Посмотреть услуги</a></div>
+        </div>
+        <aside class="hero-art" id="heroCard" aria-label="Информация об автосервисе"><strong>AVK — автосервис</strong><div><span class="info-label">Адрес</span><strong id="heroAddress">ул. 43-й Армии, 18, стр. 3</strong></div><div><span class="info-label">Режим работы</span><strong id="heroHours">9:00–21:00</strong></div><div><span class="info-label">Телефон</span><strong><a data-phone href="tel:+79263394243">+7 (926) 339-42-43</a></strong> <a class="btn" data-hero-call href="tel:+79263394243">Позвонить</a></div><div class="rating-pill">Более 1000 отзывов<small>на Яндекс Картах</small></div></aside>
+      </div>
+    </section>
+
+    <section id="services">
+      <div class="wrap">
+        <div class="section-head"><div><div class="kicker">Что мы делаем</div><h2>Услуги автосервиса</h2></div><p>Уточните нужную услугу и её стоимость у специалиста.</p></div>
+        <div class="services-grid" id="servicesGrid"></div>
+        <p class="empty-note" id="servicesEmpty" hidden>Информация об услугах скоро появится.</p>
+      </div>
+    </section>
+
+    <section class="why-section" id="why">
+      <div class="wrap">
+        <div class="section-head"><div><div class="kicker">Наш подход</div><h2>Почему выбирают нас</h2></div><p>Информация о сервисе, которую можно проверить.</p></div>
+        <div class="why-grid" id="whyGrid"></div>
+      </div>
+    </section>
+
+    <section id="process">
+      <div class="wrap">
+        <div class="section-head"><div><div class="kicker">Понятный процесс</div><h2>Как проходит ремонт</h2></div><p>Сначала выясняем причину неисправности, затем согласуем стоимость и выполняем согласованные работы.</p></div>
+        <div class="steps-grid" id="stepsGrid"></div>
+      </div>
+    </section>
+
+    <section class="reviews-section" id="reviews" hidden>
+      <div class="wrap"><div class="section-head"><div><div class="kicker">Мнение клиентов</div><h2>Отзывы</h2></div></div><div class="reviews-grid" id="reviewsGrid"></div></div>
+    </section>
+
+    <section id="trust"><div class="wrap"><div class="trust-card" style="padding:25px;border:1px solid var(--line);border-radius:14px;background:var(--panel);display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap"><div><div class="kicker">Отзывы клиентов</div><strong style="font-size:22px">Более 1000 отзывов на Яндекс Картах</strong></div><a class="btn secondary" id="reviewsMapLink" href="https://yandex.ru/maps/-/CXbNmIjz" target="_blank" rel="noopener noreferrer">Смотреть отзывы на Яндекс Картах</a></div></div></section>
+
+    <section id="contacts">
+      <div class="wrap">
+        <div class="section-head"><div><div class="kicker">Как нас найти</div><h2>Контакты</h2></div><p>Свяжитесь с нами по телефону или постройте маршрут до автосервиса.</p></div>
+        <div class="contact-grid">
+          <article class="contact-card"><h3>Адрес</h3><p id="address">ул. 43-й Армии, 18, стр. 3, Подольск</p><a class="btn secondary" id="mapLink" href="https://yandex.ru/maps/-/CXbNmIjz" target="_blank" rel="noopener noreferrer">Открыть карту</a></article>
+          <article class="contact-card"><h3>Режим работы</h3><p id="hours">9:00–21:00</p><h3>Телефон</h3><p><a data-phone href="tel:+79263394243">+7 (926) 339-42-43</a></p><a class="btn" data-contact-call href="tel:+79263394243">Позвонить</a><a class="btn messenger" data-whatsapp href="https://wa.me/79263394243" target="_blank" rel="noopener noreferrer" hidden>Написать в WhatsApp</a><a class="btn messenger" data-telegram href="#" hidden>Telegram</a></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="form-section" id="signup">
+      <div class="wrap form-grid">
+        <div class="form-copy"><div class="kicker">Оставить заявку</div><h2>Расскажите, что случилось с автомобилем</h2><p>Оставьте контактные данные и описание неисправности. Оставьте контакты и кратко опишите задачу — можно обсудить детали по телефону.</p><div class="process-list"><div class="process-item"><b>1</b><span>Укажите имя и номер телефона для обратной связи.</span></div><div class="process-item"><b>2</b><span>Добавьте марку, модель и описание проблемы.</span></div><div class="process-item"><b>3</b><span>Согласуйте дальнейшие действия с автосервисом.</span></div></div></div>
+        <form class="form-card" id="leadForm">
+          <h3>Запись в автосервис</h3><p>Поля со звёздочкой обязательны.</p>
+          <div class="field"><label for="name">Имя *</label><input id="name" name="name" autocomplete="name" placeholder="Как к вам обращаться" required></div>
+          <div class="field"><label for="phoneInput">Телефон *</label><input id="phoneInput" name="phone" type="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required></div>
+          <div class="field"><label for="vehicle">Марка и модель авто *</label><input id="vehicle" name="vehicle" placeholder="Например, марка и модель" required></div>
+          <div class="field"><label for="time">Удобное время</label><input id="time" name="preferredTime" placeholder="Например, после 17:00"></div>
+          <div class="field"><label for="problem">Что нужно сделать?</label><textarea id="problem" name="problem" placeholder="Опишите симптомы или задачу"></textarea></div>
+          <label class="consent"><input type="checkbox" name="consent" value="yes" required><span>Я согласен(на) на обработку персональных данных согласно <a href="#privacy">политике обработки персональных данных</a>.</span></label>
+          <button class="btn" type="submit">Отправить заявку</button>
+          <p class="form-note" id="formNote">После отправки заявки с вами можно будет связаться для уточнения деталей.</p>
+        </form>
+      </div>
+    </section>
+
+    <section id="privacy" style="padding:26px 0;background:#171717">
+      <div class="wrap"><p style="margin:0;color:#bbb;font-size:14px"><strong style="color:#fff">Обработка персональных данных.</strong> В демонстрационном режиме форма не отправляет данные. Полная информация об обработке данных будет опубликована перед запуском сайта.</p></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="footer-row"><a class="brand" href="#home"><span class="logo-slot" data-logo>AVK</span><span class="brand-name"><span data-business-name>[УТОЧНИТЬ: название автосервиса]</span><small>АВТОСЕРВИС</small></span></a><div><a class="phone" data-phone href="#">[УТОЧНИТЬ: телефон]</a></div><a href="#signup" class="btn">Записаться</a></div>
+      <p class="footer-note" id="legalLine" hidden>© <span id="year"></span> <span data-business-name>AVK</span>. <span id="legalText"></span></p>
+    </div>
+  </footer>
+  <div class="mobile-cta"><a class="btn" href="tel:+79263394243">Позвонить</a><a class="btn secondary" href="#signup">Записаться</a><a class="btn secondary" href="#contacts">Контакты</a></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <aside class="install-hint" id="installHint" hidden aria-live="polite">
+    <button type="button" id="closeInstallHint" aria-label="Закрыть">×</button>
+    <div id="installHintContent"></div>
+  </aside>
+
+  <script>
+    /*
+      BUSINESS — все данные компании для настройки шаблона.
+      DEMO: true включает noindex и блокирует реальную отправку формы.
+      Для запуска задайте formEndpoint, проверьте политику обработки данных и только затем отключите DEMO.
+    */
+    const BUSINESS = {
+      name: 'AVK', city: 'Подольск', address: 'ул. 43-й Армии, 18, стр. 3',
+      hours: '9:00–21:00', hoursDays: '[УТОЧНИТЬ дни недели]',
+      phone: '+7 (926) 339-42-43', phoneTel: '+79263394243',
+      whatsapp: 'https://wa.me/79263394243', whatsappVerified: false,
+      telegram: '[УТОЧНИТЬ ссылку на Telegram-канал]',
+      mapUrl: 'https://yandex.ru/maps/-/CXbNmIjz',
+      accent: '#e04435', accentHover: '', onAccent: '#ffffff',
+      logoPath: 'photos/logo.png', heroImage: 'photos/hero.jpg',
+      gallery: ['photos/gallery-1.jpg','photos/gallery-2.jpg','photos/gallery-3.jpg','photos/gallery-4.jpg','photos/gallery-5.jpg','photos/gallery-6.jpg'],
+      services: [
+        // ТИПОВОЙ ПЕРЕЧЕНЬ, подтвердить у владельца:
+        {name:'Диагностика',priceFrom:'',description:'Проверка систем автомобиля и уточнение причины неисправности.'},
+        {name:'Техническое обслуживание',priceFrom:'',description:'Работы по техническому обслуживанию автомобиля.'},
+        {name:'Замена масла и жидкостей',priceFrom:'',description:'Замена моторного масла и технических жидкостей.'},
+        {name:'Тормозная система',priceFrom:'',description:'Проверка и обслуживание элементов тормозной системы.'},
+        {name:'Ходовая часть',priceFrom:'',description:'Проверка и обслуживание элементов ходовой части.'},
+        {name:'Автоэлектрика',priceFrom:'',description:'Диагностика электрических систем автомобиля.'}
+      ],
+      whyChooseUs: [
+        {title:'Более 1000 отзывов',description:'Отзывы клиентов на Яндекс Картах.'},
+        {title:'График 9:00–21:00',description:'Время работы автосервиса.'}
+      ],
+      steps: [
+        {title:'Заявка',description:'Вы связываетесь с автосервисом и описываете задачу.'},
+        {title:'Уточнение задачи',description:'Специалист уточняет симптомы и необходимый объём проверки.'},
+        {title:'Согласование',description:'Перечень работ и стоимость согласуются до начала работ.'},
+        {title:'Выполнение работ',description:'Выполняются согласованные работы, затем обсуждается результат.'}
+      ],
+      reviews: [], legalInfo: '[УТОЧНИТЬ юридическое наименование, ИНН и реквизиты при необходимости]',
+      privacyText: 'DEMO: перед публикацией разместите утверждённую политику обработки персональных данных.',
+      DEMO: true, formEndpoint: ''
+    };
+
+    (() => {
+      const root = document.documentElement;
+      const $ = (selector, parent = document) => parent.querySelector(selector);
+      const $$ = (selector, parent = document) => [...parent.querySelectorAll(selector)];
+      const isPlaceholder = value => typeof value !== 'string' || !value.trim() || value.includes('[УТОЧНИТЬ');
+      const safeUrl = value => {
+        if (isPlaceholder(value)) return '';
+        try {
+          const url = new URL(value, window.location.href);
+          return ['http:', 'https:'].includes(url.protocol) ? url.href : '';
+        } catch { return ''; }
+      };
+      const showToast = message => {
+        const toast = $('#toast');
+        toast.textContent = message;
+        toast.classList.add('show');
+        window.setTimeout(() => toast.classList.remove('show'), 5500);
+      };
+
+      if (/^#[0-9a-f]{6}$/i.test(BUSINESS.accent)) {
+        root.style.setProperty('--accent', BUSINESS.accent);
+        // Derive a modest hover variation without requiring another configuration value.
+        root.style.setProperty('--accent-hover', /^#[0-9a-f]{6}$/i.test(BUSINESS.accentHover) ? BUSINESS.accentHover : 'color-mix(in srgb, var(--accent) 82%, black)');
+        const rgb = BUSINESS.accent.slice(1).match(/.{2}/g).map(x=>parseInt(x,16));
+        root.style.setProperty('--on-accent', /^#[0-9a-f]{6}$/i.test(BUSINESS.onAccent) ? BUSINESS.onAccent : (rgb.reduce((a,c)=>a+c,0)/3>160?'#111111':'#ffffff'));
+        $('#themeColor').content=BUSINESS.accent;
+        const fg = getComputedStyle(root).getPropertyValue('--on-accent').trim();
+        const col=BUSINESS.accent.slice(1); $('#favicon')?.setAttribute('href', `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='32' fill='%23${col}'/%3E%3Ctext x='32' y='43' font-size='28' text-anchor='middle' font-family='Arial' font-weight='bold' fill='${fg==='#ffffff'?'white':'black'}'%3EA%3C/text%3E%3C/svg%3E`);
+      }
+
+      if (BUSINESS.DEMO) {
+        if (!$('meta[name="robots"]')) {
+          const meta = document.createElement('meta');
+          meta.name = 'robots';
+          meta.content = 'noindex';
+          document.head.appendChild(meta);
+        } else {
+          $('meta[name="robots"]').content = 'noindex';
+        }
+      } else {
+        const robots = $('meta[name="robots"]');
+        if (robots) robots.remove();
+      }
+
+      document.title = BUSINESS.name + ' — автосервис в ' + (BUSINESS.cityIn || BUSINESS.city);
+      $('#demoLine').hidden = !BUSINESS.DEMO;
+      const desc=$('meta[name="description"]'); desc.content=BUSINESS.name+' — автосервис в '+BUSINESS.city+' по адресу '+BUSINESS.address+'. Диагностика и обслуживание автомобилей.';
+      const initials=(BUSINESS.name.match(/[A-Za-zА-Яа-яЁё0-9]+/g)||['A']).slice(0,3).map(w=>w[0]).join('').toUpperCase();
+      $$('[data-logo]').forEach(el=>{el.textContent=initials;const img=new Image();img.onload=()=>{el.textContent='';el.appendChild(img)};img.onerror=()=>{};img.src=BUSINESS.logoPath;});
+      $$('[data-business-name]').forEach(el => el.textContent = BUSINESS.name);
+      $$('[data-city]').forEach(el => el.textContent = BUSINESS.city);
+      $('#address').textContent = BUSINESS.address + ', ' + BUSINESS.city;
+      $('#heroAddress').textContent = BUSINESS.address; $('#heroHours').textContent=BUSINESS.hours; $('#hours').textContent = BUSINESS.hours;
+      $('#year').textContent = String(new Date().getFullYear());
+
+      let tel = BUSINESS.phoneTel;
+      if (!tel && !isPlaceholder(BUSINESS.phone)) tel = BUSINESS.phone.replace(/[^\d+]/g, '');
+      $$('[data-phone]').forEach(a => {
+        a.textContent = BUSINESS.phone;
+        a.href = tel && !isPlaceholder(BUSINESS.phone) ? 'tel:' + tel : '#contacts';
+        if (a.href.endsWith('#contacts')) a.setAttribute('aria-label', 'Телефон необходимо уточнить');
+      });
+
+      const wa = BUSINESS.whatsappVerified ? safeUrl(BUSINESS.whatsapp) : '';
+      $$('[data-whatsapp]').forEach(a=>{if(wa){a.href=wa;a.hidden=false}else a.hidden=true});
+      const tg=safeUrl(BUSINESS.telegram); $$('[data-telegram]').forEach(a=>{if(tg){a.href=tg;a.hidden=false;a.target='_blank';a.rel='noopener noreferrer'}else a.hidden=true});
+
+
+      const mapUrl = safeUrl(BUSINESS.mapUrl);
+      if (mapUrl) { $('#mapLink').href = mapUrl; $('#mapLink').hidden = false; $('#reviewsMapLink').href=mapUrl; } else { $('#mapLink').hidden=true; $('#reviewsMapLink').hidden=true; }
+
+      const servicesGrid = $('#servicesGrid');
+      BUSINESS.services.filter(s => s && !isPlaceholder(s.name)).forEach(service => {
+        const article = document.createElement('article');
+        article.className = 'service';
+        const mark = document.createElement('div'); mark.className = 'service-mark'; mark.textContent = String(servicesGrid.children.length + 1).padStart(2, '0');
+        const title = document.createElement('h3'); title.textContent = service.name;
+        const desc = document.createElement('p'); desc.textContent = service.description || '';
+        const price = document.createElement('div'); price.className = 'price';
+        price.textContent = service.priceFrom !== undefined && String(service.priceFrom).trim() !== '' ? 'от ' + service.priceFrom + ' ₽' : 'Стоимость уточняйте';
+        article.append(mark, title, desc, price); servicesGrid.appendChild(article);
+      });
+      if (!servicesGrid.children.length) $('#servicesEmpty').hidden = false;
+
+      const whyGrid = $('#whyGrid');
+      BUSINESS.whyChooseUs.filter(item => item && !isPlaceholder(item.title) && !isPlaceholder(item.description)).slice(0, 4).forEach((item, index) => {
+        const article = document.createElement('article'); article.className = 'why';
+        const number = document.createElement('div'); number.className = 'num'; number.textContent = String(index + 1).padStart(2, '0');
+        const title = document.createElement('h3'); title.textContent = item.title;
+        const desc = document.createElement('p'); desc.textContent = item.description;
+        article.append(number, title, desc); whyGrid.appendChild(article);
+      });
+      if (!whyGrid.children.length) $('#why').hidden = true;
+
+      const stepsGrid=$('#stepsGrid');
+      (BUSINESS.steps||[]).filter(x=>x&&!isPlaceholder(x.title)&&!isPlaceholder(x.description)).forEach((x,i)=>{const a=document.createElement('article');a.className='step';const n=document.createElement('div');n.className='num';n.textContent=String(i+1).padStart(2,'0');const h=document.createElement('h3');h.textContent=x.title;const p=document.createElement('p');p.textContent=x.description;a.append(n,h,p);stepsGrid.append(a)});
+      const heroImg=new Image();heroImg.onload=()=>{$('#heroCard').style.backgroundImage=`linear-gradient(90deg,rgba(17,17,17,.94),rgba(17,17,17,.76)),url("${BUSINESS.heroImage}")`};heroImg.src=BUSINESS.heroImage;
+      (BUSINESS.gallery||[]).forEach(src=>{const img=new Image();img.loading='lazy';img.alt='Фото автосервиса AVK';img.src=src;img.onerror=()=>{img.remove();if(!$('#galleryGrid')?.children.length)$('#gallery')?.setAttribute('hidden','')};img.onload=()=>{$('#gallery').hidden=false};let grid=$('#galleryGrid');if(!grid){grid=document.createElement('div');grid.id='galleryGrid';grid.className='gallery-grid';const sec=document.createElement('section');sec.id='gallery';sec.hidden=true;sec.innerHTML='<div class="wrap"><div class="section-head"><div><div class="kicker">Фото сервиса</div><h2>Галерея</h2></div></div></div>';sec.querySelector('.wrap').append(grid);$('#contacts').before(sec)}grid.append(img)});
+      if (!isPlaceholder(BUSINESS.legalInfo)) { $('#legalLine').hidden=false; $('#legalText').textContent=BUSINESS.legalInfo; }
+      const reviews = BUSINESS.reviews.filter(r => r && !isPlaceholder(r.text) && !isPlaceholder(r.name));
+      if (reviews.length) {
+        $('#reviews').hidden = false;
+        const grid = $('#reviewsGrid');
+        reviews.forEach(review => {
+          const article = document.createElement('article'); article.className = 'review';
+          const quote = document.createElement('blockquote'); quote.textContent = '«' + review.text + '»';
+          const name = document.createElement('strong'); name.textContent = review.name;
+          article.append(quote, name);
+          const url = safeUrl(review.url);
+          if (url) {
+            const link = document.createElement('a'); link.href = url; link.target = '_blank'; link.rel = 'noopener noreferrer';
+            link.textContent = 'Источник отзыва ↗'; article.appendChild(link);
+          }
+          grid.appendChild(article);
+        });
+      }
+
+      $('#leadForm').addEventListener('submit', async event => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        if (!form.reportValidity()) return;
+        if (!navigator.onLine) {
+          showToast('Нет подключения к интернету. Заявка не отправлена. Подключитесь к сети или позвоните нам.');
+          return;
+        }
+        if (BUSINESS.DEMO || !safeUrl(BUSINESS.formEndpoint)) {
+          showToast('Это демонстрационная форма: заявка не отправлена. Позвоните нам, чтобы связаться с автосервисом.');
+          return;
+        }
+        const submit = $('button[type="submit"]', form);
+        submit.disabled = true;
+        submit.textContent = 'Отправка…';
+        const data = Object.fromEntries(new FormData(form).entries());
+        data.business = BUSINESS.name;
+        try {
+          const response = await fetch(BUSINESS.formEndpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+          if (!response.ok) throw new Error('HTTP ' + response.status);
+          showToast('Заявка отправлена. Спасибо!');
+          form.reset();
+        } catch (error) {
+          showToast('Не удалось отправить заявку. Проверьте подключение формы или свяжитесь с автосервисом.');
+        } finally {
+          submit.disabled = false;
+          submit.textContent = 'Отправить заявку';
+        }
+      });
+
+      // PWA: install prompt and one-time, dismissible guidance.
+      const installHint = $('#installHint');
+      const installContent = $('#installHintContent');
+      const hintKey = 'pwa-install-hint-dismissed-v1';
+      let installPrompt = null;
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+      const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+      const dismissed = () => { try { return localStorage.getItem(hintKey) === '1'; } catch { return false; } };
+      const dismissHint = () => { installHint.hidden = true; try { localStorage.setItem(hintKey, '1'); } catch {} };
+      $('#closeInstallHint').addEventListener('click', dismissHint);
+      const showHint = () => {
+        if (isStandalone || dismissed()) return;
+        if (isIOS) {
+          installContent.innerHTML = '<strong>Добавить на экран телефона</strong><p>Нажмите «Поделиться» в Safari, затем выберите «На экран “Домой”».</p>';
+          installHint.hidden = false;
+        } else if (installPrompt) {
+          installContent.innerHTML = '<strong>Добавить на экран телефона</strong><p>Установите приложение, чтобы открывать сайт отдельно от браузера.</p><button class="install-action" type="button" id="installNow">Установить</button>';
+          $('#installNow').addEventListener('click', async () => {
+            installPrompt.prompt();
+            await installPrompt.userChoice;
+            installPrompt = null;
+            dismissHint();
+          });
+          installHint.hidden = false;
+        }
+      };
+      window.addEventListener('beforeinstallprompt', event => {
+        event.preventDefault();
+        installPrompt = event;
+        showHint();
+      });
+      window.addEventListener('appinstalled', dismissHint);
+      if (isIOS && !dismissed()) window.addEventListener('load', () => setTimeout(showHint, 1400), { once: true });
+
+      // Cache the app shell for offline opening.
+      if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js').catch(() => {});
+        }, { once: true });
+      }
+    })();
+  </script>
+</body>
+</html>
